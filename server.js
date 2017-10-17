@@ -14,7 +14,7 @@ var databaseURL = "scraper";
 var collections = ["scrapedData"];
 
 var db = mongojs.apply(databaseURL, collections);
-db.on("error", function(error) {
+db.on("error", function (error) {
     console.log("database error:", error);
 });
 
@@ -23,29 +23,57 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// grab the files that has the routes and logic
-var main = require("./routes/api/index.js");
-main(app, __dirname);
 
-app.get("/scrape", function (req, res) {
-var fetch = require("./routes/api/fetch.js");
-fetch(app, __dirname);
-});
+app.get("/", function(req, res) {
+    // Query: In our database, go to the animals collection, then "find" everything,
+    // but this time, sort it by name (1 means ascending order)
+    db.scrapedData.find(function(error, found) {
+      // Log any errors if the server encounters one
+      if (error) {
+        console.log(error);
+      }
+      // Otherwise, send the result of this query to the browser
+      else {
+        res.json(found);
+      }
+    });
+  });
 
-var headlines = require("./routes/api/headlines.js");
-headlines(app, __dirname);
+  app.get("/scrape", function(req,res) {
+    db.scrapedData.remove({});
+    request("https://orlando.craigslist.org/d/pets/search/pet", function (error, response, html) {
+        var $ = cheerio.load(html);
+        $("a.result-title").each(function (i, element) {
+    
+          var link = $(element).attr("href");
+          var title = $(element).text();
+    
+         db.scrapedData.insert({ title: title, link: link });
+        });
+        res.send("scrape complete");
+      });
+  });
 
-var notes = require("./routes/api/notes.js");
-notes(app, __dirname);
 
-app.get("/", function(req,res) {
-    res.send("Is anybody out there?");
-});
+// grab the files that have the routes and logic
+// app.get("/", function (req, res) {
+//     var main = require("./routes/api/index.js");
+//     main(app, __dirname);
+//     // res.send("hello");
+// });
+// app.get("/scrape", function (req, res) {
+//     var fetch = require("./routes/api/fetch.js");
+//     fetch(app, __dirname);
+//     res.redirect("/");
+// });
 
-app.get("/scrape", function (req, res) {
-    fetch();
-});
+// var headlines = require("./routes/api/headlines.js");
+// headlines(app, __dirname);
 
-app.listen(PORT, function() {
+// var notes = require("./routes/api/notes.js");
+// notes(app, __dirname);
+
+
+app.listen(PORT, function () {
     console.log("app listening on PORT " + PORT);
 });
