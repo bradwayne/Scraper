@@ -17,10 +17,13 @@
   },
   "homepage": "https://github.com/jdiehl99/Scraper#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
     "express-router": "0.0.1",
     "mongojs": "^2.4.1",
+    "mongoose": "^4.12.3",
     "request": "^2.83.0"
   }
 }
