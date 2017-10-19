@@ -10,10 +10,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
     <link href="/assets/css/style.css" rel="stylesheet">
-    <title>Scraper</title>
+    <title>Latest MLB News</title>
 </head>
 
 <body>
+    <div id="navbar">
+        <form action="/scrape" method="post">
+        <button type="submit">Get the News!</button>
+        </form>
+    </div>
     <div id="mainBody">
         {{{body}}}
     </div>
