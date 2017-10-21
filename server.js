@@ -31,9 +31,13 @@ app.set("view engine", "handlebars");
 // here we connect to Mongo and give it a promise
 mongoose.Promise = Promise;
 
-mongoose.connect("mongodb://ds053668.mlab.com:53668/heroku_bpp2ms99" || "mongodb://localhost/scraper", {
-  useMongoClient: true
-});
+if (process.env.MONGODB_URI){
+  mongoose.connect(process.env.MONGODB_URI)
+}else{
+  mongoose.connect("mongodb://localhost/scraper", {
+      useMongoClient: true
+  })
+}
 
 // show the main page if no route was requested
 app.get("/", function (req, res) {
