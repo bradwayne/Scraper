@@ -29,7 +29,8 @@ app.set("view engine", "handlebars");
 
 // here we connect to Mongo and give it a promise
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/scraper", {
+
+mongoose.connect(process.env.ds053668.mlab.com:53668/heroku_bpp2ms99 || "mongodb://localhost/scraper", {
   useMongoClient: true
 });
 
@@ -38,7 +39,8 @@ app.get("/", function (req, res) {
   db.article
   .find({})
   .then(function(dbArticle) {
-    if (!dbArticle) {
+    console.log("dbarticle", dbArticle);
+    if (dbArticle < 1) {
       res.render("scrape")
     } else {
       res.render("index", {data: dbArticle})
@@ -63,7 +65,7 @@ app.get("/articles", function (req, res) {
 });
 
 // our user wants to get new movie listings, go scrape the site
-app.post("/scrape", function (req, res) {
+app.get("/scrape", function (req, res) {
   // let's empty out the movies so we do not have any duplicates
   db.article.remove().exec();
   // let's see what is happening in the baseball world today

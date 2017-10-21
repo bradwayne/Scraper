@@ -13,7 +13,21 @@ body {
     height: 275px;
 }
 
-#notes,
-#articles {
+.container {
     padding: 20px;
+}
+
+.navbar-nav {
+    display: inline-block;
+  }
+  
+  .navbar-nav>li {
+     display: inline-block;
+     padding: 0 10px;
+  }
+  a.nav-link {
+      color: #fff;
+  }
+  a:hover.nav-link {
+    color: #ccc;
 }
