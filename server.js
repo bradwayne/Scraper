@@ -27,10 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+
 // here we connect to Mongo and give it a promise
 mongoose.Promise = Promise;
 
-mongoose.connect(process.env.ds053668.mlab.com:53668/heroku_bpp2ms99 || "mongodb://localhost/scraper", {
+mongoose.connect("mongodb://ds053668.mlab.com:53668/heroku_bpp2ms99" || "mongodb://localhost/scraper", {
   useMongoClient: true
 });
 
