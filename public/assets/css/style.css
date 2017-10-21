@@ -1,0 +1,19 @@
+body {
+    background-color: #000;
+}
+
+#mainBody {
+    background-color: #fff;
+    width: 1300px;
+    margin: 0 auto;
+}
+
+#header {
+    background-image: url("/assets/images/header-movie-night.jpg");
+    height: 275px;
+}
+
+#notes,
+#articles {
+    padding: 20px;
+}
