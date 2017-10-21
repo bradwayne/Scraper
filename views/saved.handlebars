@@ -1,9 +1,9 @@
 <h2>Saved Articles</h2>
+<hr/>
 {{#each data}}
-{{headline}}<br/>
+<h3 data-id='{{_id}}'>{{headline}}</h3>
 {{link}}<br/>
-{{summary}}
-<a href="/notes/{{_id}}">Article Notes</a>
-<a href="/delete/{{_id}}">Delete from Saved</a>
+{{summary}}<br/>
+<button data-id='{{_id}}' id='delmovie'>Delete Movie</button><br/>
 <hr/>
 {{/each}}

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var schemaArticles = new Schema({
+var schemaSaved = new Schema({
 
     link: {
         type: String,
@@ -17,15 +17,11 @@ var schemaArticles = new Schema({
         type: String,
         required: true
     },
-    saved: {
-        type: Boolean,
-        required: false
-    },
     note: {
         type: Schema.Types.ObjectId,
         ref: "note"
     }
 });
 
-var article = mongoose.model("article",schemaArticles)
-module.exports = article;
+var savedArticle = mongoose.model("article",schemaSaved)
+module.exports = savedArticle;

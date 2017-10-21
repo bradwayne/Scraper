@@ -31,3 +31,6 @@ body {
   a:hover.nav-link {
     color: #ccc;
 }
+h1, h2 {
+    color: blue;
+}

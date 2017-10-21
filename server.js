@@ -30,6 +30,7 @@ app.set("view engine", "handlebars");
 
 // here we connect to Mongo and give it a promise
 mongoose.Promise = Promise;
+// ds053668.mlab.com:53668/heroku_bpp2ms99
 
 if (process.env.MONGODB_URI){
   mongoose.connect(process.env.MONGODB_URI)
@@ -44,7 +45,6 @@ app.get("/", function (req, res) {
   db.article
   .find({})
   .then(function(dbArticle) {
-    console.log("dbarticle", dbArticle);
     if (dbArticle < 1) {
       res.render("scrape")
     } else {
@@ -57,12 +57,25 @@ app.get("/", function (req, res) {
 });
 
 
-// show list of articles
-app.get("/articles", function (req, res) {
+// // show list of movies
+app.get("/movies", function (req, res) {
   db.article
-  .find({})
+  .find({saved: true})
   .then(function(dbArticle) {
     res.json(dbArticle);
+  })
+  .catch(function(error) {
+    res.json(error);
+  });
+});
+
+
+// show saved movies
+app.get("/saved", function (req, res) {
+  db.article
+  .find({saved: true})
+  .then(function(dbArticle) {
+      res.render("saved", {data: dbArticle})
   })
   .catch(function(error) {
     res.json(error);
@@ -144,13 +157,43 @@ app.post("/articles/:id", function(req, res) {
 app.post("/delnote/:id", function(req, res) {
   console.log("made it to delnote route");
   console.log("note id is ", req.params.id);
-  // // go find the note
-  // db.note.find({ _id: req.params.id }).remove();
-  // remove it from the article as well
+  // remove it from the article 
   db.note.findOneAndRemove({"_id": req.params.id})
   // db.article.remove({note: req.params.id})
   .then(function(dbArticle) {
       console.log("delete note ", req.params.id );
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route to delete a movie
+app.post("/delmovie/:id", function(req, res) {
+  console.log("made it to delmovie route");
+  console.log("movieid is ", req.params.id);
+  // remove it from the db
+  db.article.findOneAndRemove({"_id": req.params.id})
+  // db.article.remove({note: req.params.id})
+  .then(function(dbArticle) {
+    res.send("Movie has been deleted");
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+
+// Route for grabbing a specific Article by id, populate it with it's note
+app.post("/savemovie/:id", function(req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  db.article
+  .update({ _id: req.params.id }, {$set: {saved:true}})
+    .populate("note")
+    .then(function(dbArticle) {
+      res.send("Movie has been saved");
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
