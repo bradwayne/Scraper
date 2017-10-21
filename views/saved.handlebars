@@ -1,0 +1,8 @@
+<h2>Saved Articles</h2>
+{{#each data}}
+{{headline}}<br/>
+{{link}}
+<a href="/notes/{{_id}}">Article Notes</a>
+<a href="/delete/{{_id}}">Delete from Saved</a>
+<hr/>
+{{/each}}

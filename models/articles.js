@@ -13,6 +13,10 @@ var schemaArticles = new Schema({
         type: String,
         required: true
     },
+    summary: {
+        type: String,
+        required: false
+    },
     note: {
         type: Schema.Types.ObjectId,
         ref: "note"

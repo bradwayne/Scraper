@@ -45,7 +45,6 @@ app.get("/", function (req, res) {
     }
     else {
       res.render("index", { data: found });
-      console.log(found);
     }
   });
 });
@@ -55,39 +54,48 @@ app.post("/scrape", function (req, res) {
   // let's empty out the news so we do not have any duplicates
   db.article.remove().exec();
   // let's see what is happening in the baseball world today
-  axios("http://www.sportingnews.com/mlb/news").then(function (response) {
+  axios("https://www.amctheatres.com/movies").then(function (response) {
     var $ = cheerio.load(response.data);
     // go to the first parent = h3 with class media-heading
-    $("h3.media-heading").each(function (i, element) {
+    // $("li.share-dialog-url").each(function (i, element) {
+      $("div.MoviePostersGrid-text").each(function (i, element) {
             // create a new object to pass into the db
             var newArticle = {};
-      // start with the base URL
-      var link1 = 'http://www.sportingnews.com';
-      // grab the URL from the article
-      var link2 = $(element).children().attr("href");
-      // concatenate to get the complete URL
-      newArticle.link = link1 + link2;
-      // get the title from the text of the a href
-      newArticle.headline = $(element).children().text();
+      // get the URL
+      newArticle.link = 'https://www.amctheatres.com/' + $(element).children('a').attr('href');
+      // get the headline
+        newArticle.headline = $(element).children('h3').text();
+      // get the summary
+      newArticle.summary = $(element).children('div').children('p').children("span:last-of-type").text();
 
       // insert the article into the db
       db.article.create(newArticle)
         .then(function (dbArticle) {
-          // confirm we were able to get new articles
-          res.send("Got your latest news!");
+          res.json(dbArticle);
         })
         // handle any errors
         .catch(function (error) {
           res.json(error);
         });
     });
-    // send them back to the index to see the refreshed content
-    res.redirect("/");
+    // send them back to the index to see thenew content
+    // res.redirect("/");
   });
 });
 
+// show an individual article, including any notes
+app.get("/saved", function(req,res) {
+  db.article.find(function (error, found) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.render("saved", { data: found });
+    }
+  });
+});
 
-
+// startup the server
 app.listen(PORT, function () {
   console.log("app listening on PORT " + PORT);
 });

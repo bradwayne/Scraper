@@ -10,14 +10,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
     <link href="/assets/css/style.css" rel="stylesheet">
-    <title>Latest MLB News</title>
+    <title>Current Movies</title>
 </head>
 
 <body>
-    <div id="navbar">
-        <form action="/scrape" method="post">
-        <button type="submit">Get the News!</button>
-        </form>
+    <div id="navbar"><a href="/">Home</a>
+    <a href="/saved">Saved Articles</a><form action="/scrape" method="post"><input class="btn btn-primary" type="submit" value="Scrape Articles!"></form>
     </div>
     <div id="mainBody">
         {{{body}}}
